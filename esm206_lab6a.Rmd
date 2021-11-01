@@ -1,0 +1,66 @@
+---
+title: "esm206_lab6"
+author: "Russell Fager"
+date: "11/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(palmerpenguins)
+library(broom)
+library(equatiomatic)
+
+
+```
+
+## Example of a rank-based test
+
+we'll make our own samples using a pseudorandom generator
+
+```{r}
+set.seed(1414)
+
+gp_1 <- sample.int(20, size = 15, replace = TRUE)
+
+set.seed(1424)
+
+gp_2 <- sample.int(30, size = 15, replace = TRUE)
+
+```
+
+```{r}
+hist(gp_1)
+
+hist(gp_2)
+```
+Try a t.test
+
+```{r}
+t.test(gp_1, gp_2)
+```
+
+If these samples were drawn from populations with the same mean, the probability of taking 2 random samples with means *at least as different* as the sample means we found by random chance is 19.8%
+
+retain (fail to reject) the null hypothesis. >> there is no signigicant difference in means between group 1 and group 2.
+
+Cannot reject the null hypothesis (usually p-valuye must be less than 5% to reject).
+
+Now lets compare this outcome to a rank based test.
+
+## Mann Whitney U unpaired rank based test
+
+```{r}
+mwu <- wilcox.test(gp_1, gp_2)
+
+mwu
+```
+
+If these samples were drawn from populations with the same ranks (medians), the probability of finding two samples with ranks *at least as different* as those in our sample is 28%.
+
+There is no significant difference in ranks (often you'll see medians instead of ranks) between group 1 and 2
+
+retain (fail to reject) the null hypothesis. 
+
+
