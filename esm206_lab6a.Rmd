@@ -63,4 +63,51 @@ There is no significant difference in ranks (often you'll see medians instead of
 
 retain (fail to reject) the null hypothesis. 
 
+## Linear regression 
+
+simple linear regression (single dependent variable, a single independent variable)
+
+```{r}
+ggplot(data = penguins, aes (x = flipper_length_mm, y = body_mass_g))+
+  geom_point() +
+  geom_smooth(method = "lm")
+
+#if you add include = FALSE in the code chunk above (r) it wont show up in your final output.
+```
+
+Find a linear regression model using ordinary least squares describing the relationship between flipper length and body mass for these penguins.
+
+3 piece:
+- what type of model
+- what is the relationship to model (DV ~ IV(s))
+- where is the date that's used to create this model?
+
+```{r}
+penguin_lm <- lm(body_mass_g ~ flipper_length_mm, data = penguins)
+
+penguin_lm
+```
+
+On average I expect a 1 mm unit increase to be associated with a 49.69 increase in grams. 
+
+what about the -5780.83? That's the body mass of a penguin if the flipper length was zero. Because this makes no sense you have to factor in the range. 
+
+```{r}
+penguin_lm_tidy <- broom::tidy(penguin_lm)
+penguin_lm_tidy
+
+# can use tidy or glance for different table summaries.
+
+broom:: glance(penguin_lm)
+```
+
+How can I include my model equation in a report?
+
+```{r}
+extract_eq(model = penguin_lm, use_coefs = TRUE)
+```
+
+```{r}
+plot(penguin_lm)
+```
 
